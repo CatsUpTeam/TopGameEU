@@ -12,6 +12,7 @@ body {
 .skyBlock {
     position: absolute;
     width: 100%;
+    z-index: 3;
     top: 0px;
     background-color: #7ed6fc;
     background-image: -webkit-gradient(linear, 0% 0%, 0% 100%,color-stop(0, rgb(25, 173, 249)),color-stop(1, rgb(29, 174, 249)));
@@ -22,6 +23,7 @@ body {
 
 .groundBlock {
     width: 100%;
+    z-index: 3;
     bottom: 0;
     position: absolute;
     background-image: url(../res/gr1.png);
