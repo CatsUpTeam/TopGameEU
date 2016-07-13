@@ -8,6 +8,14 @@ var level_1 = {
         [T_TUBE, T_TUBE, T_TUBE, T_TUBE, L_TUBE, I_TUBE, L_TUBE, X_TUBE],
         [L_TUBE, L_TUBE, I_TUBE, L_TUBE, L_TUBE, T_TUBE, L_TUBE, L_TUBE]
     ]
+    /*
+     tubeData: routesToTubeData(width, height, routes),
+     startPoints: startPoints,
+     endPoints: endPoints,
+     complexity: complexity,
+     width: width,
+     height: height,*/
+    
 };
 
-game.loadLevel(level_1.tubeData[0].length, level_1.tubeData.length, level_1);
+//game.loadLevel(level_1.tubeData[0].length, level_1.tubeData.length, level_1);
