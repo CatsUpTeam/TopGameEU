@@ -3,6 +3,7 @@ var clouds = [];
 window.onload = function () {
     tuneLandscape();
     createClouds();
+    tuneLevelSelectionMenu();
     timer(1,random(1,8),0);
 };
 window.onresize = function () {
@@ -42,7 +43,7 @@ var init = function() {
 window.addEventListener( 'DOMContentLoaded', init, false);
 
 function showHiddenMenu() {
-    var subMenu = document.getElementById("chooseLevelId");
+    var subMenu = document.getElementById("levelId");
     
     if (subMenu.style.display == 'none'){
         subMenu.style.display = 'block';
@@ -95,11 +96,13 @@ function mixCloudsArr(CloudsArr) {
 function createClouds() {
     for (var i = 1; i <= 9; ++i) {
         var cloud = document.createElement('div');
-        cloud.style.background = "url(res/clouds/cloud" + i + ".png)";
-        cloud.style.backgroundRepeat = 'no-repeat';
-        cloud.style.top = random(0,3) * 10 + 'px';
+        with (cloud.style) {
+            background = "url(res/clouds/cloud" + i + ".png)";
+            backgroundRepeat = 'no-repeat';
+            top = random(0, 3) * 10 + 'px';
+            zIndex = 2;
+        }
         cloud.className = 'cloud';
-        cloud.style.zIndex = 2;
         document.getElementById("skyBlockId").appendChild(cloud);
         clouds.push(cloud);
     }
@@ -169,9 +172,60 @@ function random(min, max) {
     return rand;
 };
 
-function chooseLevel() {
-    var submenu = document.getElementById("chooseLevelId");
-    submenu.style.display = 'none';
+function tuneLevelSelectionMenu(){
+    var topvalue = 20,leftvalue = 20;
+    
+    function makeButton(name,buttonid) {
+        var button = document.createElement('a');
+        document.getElementById("chooselevelId").appendChild(button);
+        with (button.style){
+            position = 'inherit';
+            width = '10px';
+            height = '10px';
+
+            if(buttonid % 6 == 0){
+                topvalue += 50;
+                leftvalue = 20
+            }
+            left = leftvalue + 'px';
+            fontSize = '16px';
+            top = topvalue + 'px';
+            id = 'levelNumber:' + buttonid;
+            leftvalue+=50;
+        }
+        button.className = 'menuButtons';
+        button.innerHTML = name;
+        button.onclick = function (event) {
+
+            var sourceElem = event.target || event.srcElement;
+
+            document.getElementById("chooselevelId").style.top = '-300px';
+            var tmp = sourceElem.id.split(':');
+            var id = parseInt(tmp[1]);
+            //что то с id
+        }
+    }
+    
+    var obj = document.getElementById("chooselevelId");
+    obj.style.left = (window.innerHeight / 2) + 200 + 'px';
+    
+    makeButton(1,1);
+    makeButton(2,2);
+    makeButton(3,3);
+    makeButton(4,4);
+    makeButton(5,5);
+    makeButton(6,6);
+    makeButton(7,7);
+    makeButton(8,8);
+    makeButton(9,9);
+    makeButton('←',10);
+}
+
+function levelSelectionMenu(){
+    var obj = document.getElementById("chooselevelId");
+    document.getElementById("levelId").style.display = 'none';
+    obj.style.transition = '1s';
+    obj.style.top = '200px';
 }
 
 function tuneMenu() {
@@ -180,8 +234,8 @@ function tuneMenu() {
         if (children[i].className == "menuButtons") {
             var id = children[i].id.split('_');
             children[i].style.top = (id[0] * 45) + 'px';
-        } else if (children[i].className == "chooseLevel") {
-            var submenu = document.getElementById("chooseLevelId");
+        } else if (children[i].className == "level") {
+            var submenu = document.getElementById("levelId");
             
             submenu.style.display = 'none';
             submenu.style.top = children[i - 4].style.top;
