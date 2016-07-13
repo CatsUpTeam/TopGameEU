@@ -5,6 +5,7 @@ var L_TUBE = [true, true, false, false];
 var I_TUBE = [true, false, true, false];
 var T_TUBE = [true, true, true, false];
 var X_TUBE = [true, true, true, true];
+var NO_TUBE = [false, false, false, false];
 
 function GameObject(parent, cssClass) {
     this.HTML = document.createElement("div");
@@ -48,22 +49,34 @@ function chechPathExistence(b, si, sj, ei, ej, cameFrom) {
                     if (notAbleToMove(sj, si - 1, 2, b)){
                         break;
                     }
-                    return chechPathExistence(b, si - 1, sj, ei, ej, 2);
+                    if (chechPathExistence(b, si - 1, sj, ei, ej, 2)){
+                        return true;
+                    }
+                    break;
                 case 1:
                     if (notAbleToMove(sj + 1, si, 3, b)){
                         break;
                     }
-                    return chechPathExistence(b, si, sj + 1, ei, ej, 3);
+                    if (chechPathExistence(b, si, sj + 1, ei, ej, 3)){
+                        return true;
+                    }
+                    break;
                 case 2:
                     if (notAbleToMove(sj, si + 1, 0, b)){
                         break;
                     }
-                    return chechPathExistence(b, si + 1, sj, ei, ej, 0);
+                    if (chechPathExistence(b, si + 1, sj, ei, ej, 0)) {
+                        return true;
+                    }
+                    break;
                 case 3:
                     if (notAbleToMove(sj - 1, si, 1, b)){
                         break;
                     }
-                    return chechPathExistence(b, si, sj - 1, ei, ej, 1);
+                    if (chechPathExistence(b, si, sj - 1, ei, ej, 1)){
+                        return true;
+                    }
+                    break;
             }
         }
     }
