@@ -385,3 +385,16 @@ function newGame() {
     action();
     game.loadLevel(fieldWidth, fieldHeight, randomLevel(fieldWidth, fieldHeight, 1));
 }
+
+function addToScoreBoard(username, score) {
+    firebase.database().ref('users/'+ username).set({
+        score: score
+    });
+}
+addToScoreBoard("Gleb", 149);
+function getFromScoreBoard(name) {
+    console.log(firebase.database().ref('users/' + name).val());
+}
+
+getFromScoreBoard("Gleb");
+
