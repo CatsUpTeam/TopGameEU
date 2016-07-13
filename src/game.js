@@ -191,14 +191,19 @@ function Board(width, height, startPoints, finishPoints) {
         var tmpA = this.begins[i] = {i: startPoints[i], j: 0 };
         var tmpB = this.ends[i] = {i: finishPoints[i], j: width - 1 };
         this.tubes[tmpA.i][tmpA.j] = new Tube(this.HTML, [true, true, true, true], "tubeStart", tmpA.j, tmpA.i);
+        startTop = this.tubes[tmpA.i][tmpA.j].HTML.style.top;
         this.tubes[tmpB.i][tmpB.j] = new Tube(this.HTML, [true, true, true, true], "tubeFinish", tmpB.j, tmpB.i);
+        finishTop = this.tubes[tmpA.i][tmpA.j].HTML.style.top;
     }
     this.locked = true;
     this.attachObject();
 }
 
+var fieldLeft, fieldRight;
 Board.prototype.centrify = function () {
     this.HTML.style.left = Math.floor(window.innerWidth  / 2 - this.width * 45 / 2) + "px";
+    fieldLeft = Math.floor(window.innerWidth  / 2 - this.width * 45 / 2);
+    fieldRight = fieldLeft + parseInt(this.width * 45);
     this.HTML.style.top = "90px";
 };
 
@@ -369,6 +374,7 @@ Game.prototype.createTestLevel = function () {
 
 
 var game = new Game();
+
 window.onresize = function () { game.board.centrify() };
 
 var fieldWidth  = 5;
@@ -382,19 +388,6 @@ function chooseLevel(w, h){
 }
 
 function newGame() {
-    action();
     game.loadLevel(fieldWidth, fieldHeight, randomLevel(fieldWidth, fieldHeight, 1));
+    action();
 }
-
-function addToScoreBoard(username, score) {
-    firebase.database().ref('users/'+ username).set({
-        score: score
-    });
-}
-addToScoreBoard("Gleb", 149);
-function getFromScoreBoard(name) {
-    console.log(firebase.database().ref('users/' + name).val());
-}
-
-getFromScoreBoard("Gleb");
-

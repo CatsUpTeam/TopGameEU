@@ -161,7 +161,17 @@ function tuneGroudBlock() {
     grounBlock.style.height = window.innerHeight * 0.7 + "px";
 
     with (document.getElementById("skyBlockId")) {
-        grounBlock.style.top =  parseInt(style.height) + "px";
+        grounBlock.style.top = parseInt(style.height) + "px";
+
+        var obj =  document.getElementById("houseId");
+        obj.style.height = '120px';
+        obj.style.top = parseInt(style.height) - parseInt(obj.style.height) + "px";
+
+        obj =  document.getElementById("wellId");
+        obj.style.height = '73px';
+        obj.style.top = parseInt(style.height) - parseInt(obj.style.height) + "px";
+        obj.style.left = '500px';
+
     }
     tuneMenu();
     tuneBoard();
@@ -267,7 +277,12 @@ function tuneMenu() {
     }
 }
 
+var startTop,finishTop;
+
 function action() {
+    document.getElementById("houseId").style.left = fieldLeft - 65 + 'px';
+    document.getElementById("wellId").style.left = fieldRight + 65 + 'px';
+    
     document.getElementById("levelId").style.display = 'none';
     document.getElementById("chooselevelId").style.top = '-300px';
     document.getElementById("winDivId").style.top = '-300px';
