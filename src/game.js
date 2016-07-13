@@ -341,8 +341,7 @@ var fieldWidth  = 5;
 var fieldHeight = 5;
 
 function chooseLevel(w, h){
-    var submenu = document.getElementById("chooseLevelId");
-    submenu.style.display = 'none';
+    document.getElementById("levelId").style.display = 'none';
     fieldWidth = w;
     fieldHeight = h;
     newGame();
