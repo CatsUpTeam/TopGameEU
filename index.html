@@ -9,6 +9,7 @@
     @import url("css/landscape.css");
     @import url("css/tube.css");
     @import url("css/controls.css");
+    @import url("css/progress_bar.css");
 </style>
 <body>
 
@@ -17,6 +18,10 @@
     <div id="tree"></div>
 </div>
 <div class="groundBlock" id="groundBlockId">
+
+    <div class="progressbar" id="progressBarId">
+        <div class="bar"><span></span></div>
+    </div>
 
     <div class="menuButton" id="button">
     </div>
@@ -31,9 +36,9 @@
                     <a class="menuButtons" id = "2" onclick="game.solve()">Solve</a>
                     <a class="menuButtons" id = "3" onclick="showHiddenMenu()">Level</a>
                     <div class = "level" id = "levelId">
-                        <a class="menuButtons" id = "3_1" onclick="chooseLevel(5,5)">Easy</a>
+                        <a class="menuButtons" id = "3_1" onclick="chooseLevel(5, 5)">Easy</a>
                         <a class="menuButtons" id = "3_2" onclick="chooseLevel(10,10)">Medium</a>
-                        <a class="menuButtons" id = "3_3" onclick="chooseLevel(15,15)">Hard</a>
+                        <a class="menuButtons" id = "3_3" onclick="chooseLevel(17,13)">Hard</a>
                         <a class="menuButtons" id = "3_4" onclick="levelSelectionMenu()">Choose</a>
                     </div>
                 <a class="menuButtons" id = "4">Results</a>
@@ -53,6 +58,8 @@
 
 
 <script src="src/landscape.js" type="text/javascript"></script>
+<script src="src/blackbox/jquery.min.js" type="text/javascript"></script>
+<script src="src/blackbox/progress_bar.js" type="text/javascript"></script>
 <script src="src/generator.js" type="text/javascript"></script>
 <script src="src/game.js" type="text/javascript"></script>
 

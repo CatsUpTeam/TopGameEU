@@ -15,7 +15,7 @@ function GameObject(parent, cssClass) {
 
 GameObject.prototype.setPosition = function (x, y) {
     this.HTML.style.left = x * 45 + "px";
-    this.HTML.style.top = y * 45 + "px";
+    this.HTML.style.top  = y * 45 + "px";
 };
 
 GameObject.prototype.removeObject = function () {
@@ -29,7 +29,7 @@ GameObject.prototype.attachObject = function () {
     else{
         this.parent.appendChild(this.HTML);
     }
-}
+};
 
 Tube.prototype = new GameObject();
 
@@ -133,6 +133,7 @@ Tube.prototype.rotate = function (angle) {
     }
     if (!this.branch.locked){
         if (checkWinCondition(this.parent)){
+            game.stopTimer();
             showWinBlock();
         }
     }
@@ -197,9 +198,8 @@ function Board(width, height, startPoints, finishPoints) {
 }
 
 Board.prototype.centrify = function () {
-    var newX = Math.floor(window.innerWidth / 2 - this.width / 2 * 45);
-    var newY = Math.floor(window.innerHeight / 2 - this.height / 2 * 45);
-    this.setPosition(newX, newY);
+    this.HTML.style.left = Math.floor(window.innerWidth  / 2 - this.width * 45 / 2) + "px";
+    this.HTML.style.top = "90px";
 };
 
 function Game() {
@@ -247,7 +247,6 @@ Game.prototype.loadLevel = function (width, height, level) {
     }
     this.board = new Board(width, height, level.startPoints, level.endPoints);
     this.board.level = level;
-    //this.board.centrify();
     for (var i = 0; i < height; i++) {
         for (var j = 0; j < width; j++) {
             var tubeData = level.tubeData[i][j];
@@ -259,9 +258,28 @@ Game.prototype.loadLevel = function (width, height, level) {
         }
     }
     this.randomize();
+    this.stopTimer();
+    this.startTimer(level.complexity * 30);
+    this.board.centrify();
     this.board.locked = false;
 };
 
+Game.prototype.startTimer = function(timeLeft) {
+    var currentTime = 0;
+    var tick = setInterval(function() {
+        currentTime++;
+        if (currentTime == timeLeft) {
+            alert('you lose');
+            clearInterval(tick);
+        }
+        setProgress(Math.floor(currentTime / timeLeft * 100));
+    }, 1000);
+    this.tick = tick;
+};
+
+Game.prototype.stopTimer = function() {
+    clearInterval(this.tick);
+};
 
 Game.prototype.isOver = function() {
     if (this.doCheckWinCondition == false) {
@@ -351,6 +369,7 @@ Game.prototype.createTestLevel = function () {
 
 
 var game = new Game();
+window.onresize = function () { game.board.centrify() };
 
 var fieldWidth  = 5;
 var fieldHeight = 5;
