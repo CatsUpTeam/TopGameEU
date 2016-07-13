@@ -160,7 +160,6 @@ Game.prototype.loadLevel = function (width, height, level) {
             var tubeData = level.tubeData[i][j];
             var cssData = tubeDataToCSS(tubeData);
             if (cssData == "") {
-                this.board.tubes[i][j] = null;
                 continue;
             }
             this.board.tubes[i][j] = new Tube(this.board, cssToTube(cssData), cssData, j, i);
