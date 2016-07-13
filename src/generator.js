@@ -1,26 +1,7 @@
-﻿const wall  = 1;
+﻿"use strict;"
+
+const wall  = 1;
 const empty = 0;
-
-function randomInt(max) {
-    return Math.floor(Math.random() * max);
-}
-
-function Point(x, y) {
-    this.x = x;
-    this.y = y;
-}
-
-Point.prototype.addXY = function (x, y) {
-    return new Point(this.x + x, this.y + y);
-};
-
-Point.prototype.equals = function (point) {
-    return this.x == point.x && this.y == point.y;
-};
-
-function inBorders(pos, width, height) {
-    return pos.x >= 0 && pos.x < width && pos.y >= 0 && pos.y < height;
-}
 
 function randomLabyrinth(width, height) {
     var labWidth  = 2 * width - 1;
@@ -332,10 +313,9 @@ function randomLevel(width, height, complexity) {
         tubeData: routesToTubeData(width, height, routes),
         startPoints: startPoints,
         endPoints: endPoints,
-        complexity: complexity
+        complexity: complexity,
+        width: width,
+        height: height,
+        generated: true
     };
-}
-
-function FileLevel(pathToFile) {
-
 }
