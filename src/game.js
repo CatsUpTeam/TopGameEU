@@ -1,11 +1,10 @@
-/**/
 "use strict;"
 
-var L_TUBE = [true, true, false, false];
-var I_TUBE = [true, false, true, false];
-var T_TUBE = [true, true, true, false];
-var X_TUBE = [true, true, true, true];
-var NO_TUBE = [false, false, false, false];
+var L_TUBE  = [true  ,true  ,false ,false];
+var I_TUBE  = [true  ,false ,true  ,false];
+var T_TUBE  = [true  ,true  ,true  ,false];
+var X_TUBE  = [true  ,true  ,true  ,true];
+var NO_TUBE = [false ,false ,false ,false];
 
 function GameObject(parent, cssClass) {
     this.HTML = document.createElement("div");
@@ -23,119 +22,99 @@ GameObject.prototype.removeObject = function () {
 };
 
 GameObject.prototype.attachObject = function () {
-    if (this.parent.HTML != undefined) {
-        this.parent.HTML.appendChild(this.HTML);
-    }
-    else{
-        this.parent.appendChild(this.HTML);
-    }
+    this.parent.HTML == undefined ?
+        this.parent.appendChild(this.HTML)
+      : this.parent.HTML.appendChild(this.HTML); 
 };
 
-Tube.prototype = new GameObject();
+var notAbleToMove = function(offPoint, branch, board) {
+    return !inBorders(offPoint, board.width, board.height)
+        || board.tubes[offPoint.y][offPoint.x] == undefined
+        || board.tubes[offPoint.y][offPoint.x].branch[branch] == false;
+};
 
-function notAbleToMove(offsetX, offsetY, branch, board) {
-    return offsetX < 0 || offsetX >= board.width || offsetY < 0 || offsetY >= board.height
-        || board.tubes[offsetY][offsetX] == undefined || board.tubes[offsetY][offsetX].branch[branch] == false;
-}
-
-function chechPathExistence(b, si, sj, ei, ej, cameFrom) {
-    if (b.tubes[si][sj] == b.tubes[ei][ej]){
+function checkPathExistence(board, sPos, ePos, cameFrom) {
+    if (board.tubes[sPos.y][sPos.x] == board.tubes[ePos.y][ePos.x]) {
         return true;
     }
-    for (let i = 0; i < 4; i++){
-        if (b.tubes[si][sj].branch[i] == true && i != cameFrom){
-            switch (i){
-                case 0:
-                    if (notAbleToMove(sj, si - 1, 2, b)){
-                        break;
-                    }
-                    if (chechPathExistence(b, si - 1, sj, ei, ej, 2)){
-                        return true;
-                    }
-                    break;
-                case 1:
-                    if (notAbleToMove(sj + 1, si, 3, b)){
-                        break;
-                    }
-                    if (chechPathExistence(b, si, sj + 1, ei, ej, 3)){
-                        return true;
-                    }
-                    break;
-                case 2:
-                    if (notAbleToMove(sj, si + 1, 0, b)){
-                        break;
-                    }
-                    if (chechPathExistence(b, si + 1, sj, ei, ej, 0)) {
-                        return true;
-                    }
-                    break;
-                case 3:
-                    if (notAbleToMove(sj - 1, si, 1, b)){
-                        break;
-                    }
-                    if (chechPathExistence(b, si, sj - 1, ei, ej, 1)){
-                        return true;
-                    }
-                    break;
+    var directions = [[0, -1, 2], [1, 0, 3], [0, 1, 0], [-1, 0, 1]];
+    for (var i = 0; i < 4; i++) {
+        if (board.tubes[sPos.y][sPos.x].branch[i] == true && i != cameFrom) {
+            var dx     = directions[i][0];
+            var dy     = directions[i][1];
+            var branch = directions[i][2];
+            if (notAbleToMove(sPos.addXY(dx, dy), branch, board)) {
+                continue;
+            }
+            if (checkPathExistence(board, sPos.addXY(dx, dy), ePos, branch)) {
+                return true;
             }
         }
     }
     return false;
 }
 
-function shiftRight(branch) {
-    let tmp = branch[3];
-    for (let i = 3; i > 0; --i){
-        branch[i] = branch[i - 1];
-    }
-    branch[0] = tmp;
-}
-
-function shiftLeft(bracnh) {
-    let tmp = bracnh[0];
-    for (let i = 0; i < 3; i++){
-        bracnh[i] = bracnh[i + 1];
-    }
-    bracnh[3] = tmp;
-}
-
 function checkWinCondition(board) {
-    let connectedBegins = [];
-    let connectedEnds = [];
-    for (let i = 0; i < board.begins.length; i++){
+    var connectedBegins = [];
+    var connectedEnds = [];
+    for (var i = 0; i < board.begins.length; i++) {
         connectedBegins[i] = false;
         connectedEnds[i] = false;
     }
-    let b = board;
-    for (let i = 0; i < board.begins.length; i++){
-        for (let j = 0; j < board.ends.length; j++){
-            if (chechPathExistence(b, b.begins[i].i, b.begins[i].j, b.ends[j].i, b.ends[j].j, -1)){
+    for (i = 0; i < board.begins.length; i++) {
+        for (var j = 0; j < board.ends.length; j++) {
+            if (checkPathExistence(board, board.begins[i], board.ends[i], -1)) {
                 connectedBegins[i] = connectedEnds[j] = true;
             }
         }
     }
-    for (let i = 0; i < b.begins.length; i++){
-        if (!connectedBegins[i] || !connectedEnds[i]){
+    for (i = 0; i < board.begins.length; i++) {
+        if (!connectedBegins[i] || !connectedEnds[i]) {
             return false;
         }
     }
     return true;
 }
 
+Tube.prototype = new GameObject();
+
+function Tube(parent, branch, tubeType, x, y) {
+    GameObject.call(this, parent, "tube");
+    this.HTML.classList.add(tubeType);
+    this.tubeType = tubeType;
+    this.locked = false;
+    this.angle = 0;
+    this.branch = new Array(4);
+    
+    for (var i = 0; i < 4; i++){
+        this.branch[i] = branch[i];
+    }
+    if (tubeType != "tubeStart" && tubeType != "tubeFinish") {
+        this.HTML.oncontextmenu = function () {
+            this.rotateLeft();
+            return false;
+        }.bind(this);
+        this.HTML.onclick = this.rotateRight.bind(this);
+    }
+    this.attachObject();
+    this.setPosition(x, y);
+}
+
 Tube.prototype.rotate = function (angle) {
+    var shiftRight = function(branch) {
+        branch.unshift(branch[3]);
+    };
+    var shiftLeft = function(branch) {
+        branch.push(branch[0]);
+        branch.shift();
+    };
+    
     this.angle += angle;
     this.HTML.style.transform = "rotate(" + this.angle + "deg)";
-    if (angle < 0){
-        shiftLeft(this.branch);
-    }
-    else {
-        shiftRight(this.branch);
-    }
-    if (!this.branch.locked){
-        if (checkWinCondition(this.parent)){
-            game.stopTimer();
-            showWinBlock();
-        }
+    angle < 0 ? shiftLeft(this.branch) : shiftRight(this.branch);
+    if (!this.branch.locked && checkWinCondition(this.parent)) {
+        game.stopTimer();
+        showWinBlock();
     }
 };
 
@@ -147,60 +126,38 @@ Tube.prototype.rotateLeft = function () {
     this.rotate(-90);
 };
 
-
-function Tube(parent, branch, tubeType, x, y) {
-    GameObject.call(this, parent, "tube");
-    this.HTML.classList.add(tubeType);
-    this.tubeType = tubeType;
-   
-    this.branch = new Array(4);
-    for (let i = 0; i < 4; i++){
-        this.branch[i] = branch[i];
-    }
-    this.locked = false;
-    this.angle = 0;
-    if (tubeType != "tubeStart" && tubeType != "tubeFinish") {
-        this.HTML.oncontextmenu = function () {
-            this.rotateLeft();
-            return false;
-        }.bind(this);
-        this.HTML.onclick = this.rotateRight.bind(this);
-    }
-    this.attachObject();
-    this.setPosition(x, y);
-    this.i = y;
-    this.j = x;
-}
-
 Board.prototype = new GameObject();
 
-function Board(width, height, startPoints, finishPoints) {
+function Board(level) {
     GameObject.call(this, document.getElementById("groundBlockId"), "board");
-    this.tubes = new Array(height);
-    for (let i = 0; i < height; i++){
-        this.tubes[i] = new Array(width);
+    this.tubes = new Array(level.height);
+    for (var i = 0; i < level.height; i++) {
+        this.tubes[i] = new Array(level.width);
     }
-    this.width = width;
-    this.height = height;
-    this.level = null;
-    this.HTML.style.width  = width * 45 + "px";
-    this.HTML.style.height = height * 45 + "px";
+    this.width = level.width;
+    this.height = level.height;
+    this.HTML.style.width  = this.width  * 45 + "px";
+    this.HTML.style.height = this.height * 45 + "px";
+    this.level = level;
     this.begins = [];
     this.ends = [];
-    for (var i = 0; i < startPoints.length; i++) {
-        var tmpA = this.begins[i] = {i: startPoints[i], j: 0 };
-        var tmpB = this.ends[i] = {i: finishPoints[i], j: width - 1 };
-        this.tubes[tmpA.i][tmpA.j] = new Tube(this.HTML, [true, true, true, true], "tubeStart", tmpA.j, tmpA.i);
-        startTop = this.tubes[tmpA.i][tmpA.j].HTML.style.top;
-        this.tubes[tmpB.i][tmpB.j] = new Tube(this.HTML, [true, true, true, true], "tubeFinish", tmpB.j, tmpB.i);
-        finishTop = this.tubes[tmpA.i][tmpA.j].HTML.style.top;
+    for (i = 0; i < level.startPoints.length; i++) {
+        var tA = this.begins[i] = new Point(0, level.startPoints[i]);
+        var tB = this.ends[i]   = new Point(this.width - 1, level.endPoints[i]);
+        this.tubes[tA.y][tA.x] = new Tube(this.HTML, X_TUBE, "tubeStart",  tA.x, tA.y);
+        this.tubes[tB.y][tB.x] = new Tube(this.HTML, X_TUBE, "tubeFinish", tB.x, tB.y);
+        startTop  = this.tubes[tA.y][tA.x].HTML.style.top;
+        finishTop = this.tubes[tA.y][tA.x].HTML.style.top;
     }
     this.locked = true;
     this.attachObject();
 }
 
 var fieldLeft, fieldRight;
+
 Board.prototype.centrify = function () {
+    // this.HTML.style.left = Math.floor(window.innerWidth  / 2 - this.width * 45 / 2) + "px";
+    // this.HTML.style.top = "90px";
     this.HTML.style.left = Math.floor(window.innerWidth  / 2 - this.width * 45 / 2) + "px";
     fieldLeft = Math.floor(window.innerWidth  / 2 - this.width * 45 / 2);
     fieldRight = fieldLeft + parseInt(this.width * 45);
@@ -242,18 +199,17 @@ function cssToTube(cssData) {
         case "tubeI":
             return I_TUBE;
         default:
-            return [false, false, false, false];
+            return NO_TUBE;
     }
 }
 
-Game.prototype.loadLevel = function (width, height, level) {
+Game.prototype.loadLevel = function (level) {
     if (this.board != null) {
         this.board.removeObject();
     }
-    this.board = new Board(width, height, level.startPoints, level.endPoints);
-    this.board.level = level;
-    for (var i = 0; i < height; i++) {
-        for (var j = 0; j < width; j++) {
+    this.board = new Board(level);
+    for (var i = 0; i < level.height; i++) {
+        for (var j = 0; j < level.width; j++) {
             var tubeData = level.tubeData[i][j];
             var cssData = tubeDataToCSS(tubeData);
             if (cssData == "") {
@@ -286,20 +242,6 @@ Game.prototype.stopTimer = function() {
     clearInterval(this.tick);
 };
 
-Game.prototype.isOver = function() {
-    if (this.doCheckWinCondition == false) {
-        return;
-    }
-    var b = this.board;
-    for (let i = 0; i < b.begins.length; i++){
-        checkWinCondition(b, b.begins[i].i, b.begins[i].j, b.ends[i].i, b.ends[i].j);
-    }
-};
-
-Game.prototype.createRandomLevel = function(width, height, complexity) {
-
-};
-
 Game.prototype.solve = function () {
     action();
     if (this.board.level == null) {
@@ -313,11 +255,10 @@ Game.prototype.solve = function () {
         }
         return true;
     };
-    var emptyData = [false, false, false, false];
     for (var i = 0; i < this.board.height; i++) {
         for (var j = 0; j < this.board.width; j++) {
             var labTubeData = this.board.level.tubeData[i][j];
-            if (equalTubeData(labTubeData, emptyData)) {
+            if (equalTubeData(labTubeData, NO_TUBE)) {
                 continue;
             }
             var tubeData = this.board.tubes[i][j].branch;
@@ -327,54 +268,31 @@ Game.prototype.solve = function () {
             }
         }
     }
-    this.doCheckWinCondition = true;
-};
-
-Game.prototype.lockUserActions = function () {
-
-};
-
-Game.prototype.unlockUserActions = function () {
-
 };
 
 Game.prototype.restart = function () {
-    action();
-    var width = game.board.width;
-    var height = game.board.height;
+
     var level  = game.board.level;
-    this.loadLevel(width, height, level);
+    this.loadLevel(level);
+    action();
 };
 
 Game.prototype.randomize = function () {
-    //let b = this.board;
-    for (let i = 0; i < this.board.height; i++){
-        for (let j = 0; j < this.board.width; j++){
-            if (this.board.tubes[i][j] != undefined && this.board.tubes[i][j].tubeType != "tubeStart" 
-                && this.board.tubes[i][j].tubeType != "tubeFinish"){
-                let rnd = randomInt(4);
-                for (let k = 0; k <= rnd; k++){
-                    this.board.tubes[i][j].rotateRight();
+    var tubes = this.board.tubes;
+    for (var i = 0; i < this.board.height; i++) {
+        for (var j = 0; j < this.board.width; j++) {
+            if (tubes[i][j] != undefined && tubes[i][j].tubeType != "tubeStart" 
+                && tubes[i][j].tubeType != "tubeFinish") {
+                var rnd = randomInt(4);
+                for (var k = 0; k <= rnd; k++) {
+                    tubes[i][j].rotateRight();
                 }
             }
         }
     }
 };
 
-Game.prototype.createTestLevel = function () {
-    console.log("Creating test level" );
-    this.board = new Board(3, 3, 0, [{i: 0, j: 0}], [{i: 2, j: 2}]);
-    this.board.setPosition(parseInt(this.board.parent.style.right) / 2, parseInt(this.board.parent.style.bottom) / 2);
-    console.log("Creating Tubes");
-    this.board.tubes[0][1] = new Tube(this.board, [true, true, true, false], "tubeT", 1, 0);
-    this.board.tubes[0][2] = new Tube(this.board, [true, true, true, true], "tubeX", 2, 0);
-    this.board.tubes[1][2] = new Tube(this.board, [true, false, true, false], "tubeI", 2, 1);
-    
-};
-
-
 var game = new Game();
-
 window.onresize = function () { game.board.centrify() };
 
 var fieldWidth  = 5;
@@ -388,6 +306,7 @@ function chooseLevel(w, h){
 }
 
 function newGame() {
-    game.loadLevel(fieldWidth, fieldHeight, randomLevel(fieldWidth, fieldHeight, 1));
+
+    game.loadLevel(randomLevel(fieldWidth, fieldHeight, 1));
     action();
 }
