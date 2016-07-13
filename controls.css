@@ -4,15 +4,15 @@
     height: 50px;
     top: 10px;
     right: 10px;
-    background-image: url("res/button.png");
+    background-image: url("../res/button.png");
 }
 
 .menuButton:hover {
-    background-image: url("res/button_on_action.png");
+    background-image: url("../res/button_on_action.png");
 }
 
 .menuButton:active {
-    background-image: url("res/button.png");
+    background-image: url("../res/button.png");
 }
 
 .menu {
@@ -20,7 +20,7 @@
     right: -35px;
     top: 50px;
     width: 190px;
-    height: 400px;
+    height: 300px;
     -webkit-perspective: 600px;
     -moz-perspective: 600px;
     -ms-perspective: 600px;
@@ -67,10 +67,10 @@ figure {
     backface-visibility: hidden;
 }
 .back {
-    background: url(res/gr1.png);
+    background: url(../res/gr1.png);
 }
 .front {
-    background: url(res/gr1.png);
+    background: url(../res/gr1.png);
     -webkit-transform: rotateY( 180deg );
     -moz-transform: rotateY( 180deg );
     -ms-transform: rotateY(180deg);
@@ -122,5 +122,11 @@ figure {
 .menuButtons:active {
     position:inherit;
     top:1px;
+}
+
+.chooseLevel {
+    position: inherit;
+    top:0px;
+    left: 70px;
 }
 
