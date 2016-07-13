@@ -131,6 +131,7 @@ figure {
 }
 
 .chooselevel {
+    transition: 2s;
     position: absolute;
     width: 290px;
     height: 140px;
@@ -147,5 +148,50 @@ figure {
     -moz-box-shadow: 0px 0px 142px 49px rgb(201, 201, 201);
     -webkit-box-shadow: 0px 0px 142px 49px rgb(201, 201, 201);
     box-shadow: 0px 0px 142px 49px rgb(201, 201, 201);
+}
+
+.winDiv {
+    transition: 2s;
+    position: absolute;
+    background: rgb(255,255,255);
+    width: 400px;
+    height: 139px;
+    top: -300px;
+    border: 1px rgb(255, 255, 255) solid;
+    z-index: 5;
+    color: rgb(252, 240, 5);
+    font-size: 48px;
+    font-weight: inherit;
+    font-family: Phosphate;
+    font-style: inherit;
+    text-decoration: inherit;
+    text-align: center;
+
+    line-height: 1.45em;
+    text-shadow: 4px 4px 10px rgb(82, 173, 181);
+
+    -moz-box-shadow: 0px 0px 200px 133px rgb(255, 255, 255);
+    -webkit-box-shadow: 0px 0px 200px 133px rgb(255, 255, 255);
+    box-shadow: 0px 0px 200px 133px rgb(255, 255, 255);
+}
+
+.winButtons {
+    background: #fff;
+    background: -webkit-linear-gradient(#fff, #fff);
+    background: linear-gradient(#fff, #fff);
+    border: 2px solid #000;
+    border-radius: 15px;
+    color: #000;
+    display: inline-block;
+    padding: 5px 15px;
+    font: normal 700 18px/1 "Phosphate", sans-serif;
+    text-align: center;
+    text-shadow: none;
+}
+.winButtons:hover {
+    background: #ECECEC;
+}
+.winButtons:active {
+    background:#DBDBDB;
 }
 
