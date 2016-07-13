@@ -118,8 +118,12 @@ function tubeDataToCSS(tubeData) {
     if (tubeSize(tubeData) == 3) {
         return "tubeT";
     }
-    if (tubeData[0] == tubeData[2] || tubeData[1] == tubeData[3]) {
+    if (tubeData[0] == true && tubeData[0] == tubeData[2]
+        || tubeData[1] == true && tubeData[1] == tubeData[3]) {
         return "tubeI";
+    }
+    else if (tubeSize(tubeData) == 0) {
+        return "";
     }
     else {
         return "tubeL";
@@ -127,14 +131,6 @@ function tubeDataToCSS(tubeData) {
 }
 
 Game.prototype.loadLevel = function (width, height, level) {
-    // console.log("Creating test level" );
-    // this.board = new Board(3, 3, 0, [{i: 0, j: 0}], [{i: 2, j: 2}]);
-    // this.board.setPosition(parseInt(this.board.parent.style.right) / 2, parseInt(this.board.parent.style.bottom) / 2);
-    // console.log("Creating Tubes");
-    // this.board.tubes[0][1] = new Tube(this.board, [true, true, true, false], "tubeT", 1, 0);
-    // this.board.tubes[0][2] = new Tube(this.board, [true, true, true, true], "tubeX", 2, 0);
-    // this.board.tubes[1][2] = new Tube(this.board, [true, false, true, false], "tubeI", 2, 1);
-
     if (this.board != null) {
         this.board.removeObject();
     }
@@ -143,8 +139,12 @@ Game.prototype.loadLevel = function (width, height, level) {
     for (var i = 0; i < height; i++) {
         for (var j = 0; j < width; j++) {
             var tubeData = level.tubeData[i][j];
-            //alert(tubeDataToCSS(tubeData));
-            this.board.tubes[i][j] = new Tube(this.board, tubeData, tubeDataToCSS(tubeData), j, i);
+            var cssData = tubeDataToCSS(tubeData);
+            if (cssData == "") {
+
+                continue;
+            }
+            this.board.tubes[i][j] = new Tube(this.board, tubeData, cssData, j, i);
         }
     }
 };
@@ -225,6 +225,6 @@ Game.prototype.createTestLevel = function () {
     
 };
 
+
 var game = new Game();
 game.loadLevel(12, 12, randomLevel(12, 12, 3));
-// game.createTestLevel();
