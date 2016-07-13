@@ -37,7 +37,6 @@ Element.prototype.toggleClassName = function (a) {
 /* /DOM Utility Functions from PastryKit */
 
 var init = function() {
-
     document.getElementById('button').addEventListener('click', function(){
         document.getElementById('card').toggleClassName('flip');
     }, false);
@@ -48,10 +47,10 @@ window.addEventListener( 'DOMContentLoaded', init, false);
 function showHiddenMenu() {
     action();
     var subMenu = document.getElementById("levelId");
-    
     if (subMenu.style.display == 'none'){
         subMenu.style.display = 'block';
-    } else  {
+    } 
+    else {
         subMenu.style.display = 'none';
     }
 }
@@ -62,25 +61,23 @@ function timer(startTime,randomCoefficient,pushed) {
         startTime = 1;
         randomCoefficient = random(2,8);
     }
-
     else if (startTime % randomCoefficient  == 0) {
-            clouds[pushed].style.transition = '80s';
-            clouds[pushed].style.transitionTimingFunction = 'linear';
-                    pushCloud(clouds[pushed]);
+        clouds[pushed].style.transition = '80s';
+        clouds[pushed].style.transitionTimingFunction = 'linear';
+        pushCloud(clouds[pushed]);
         
-            startTime = 1;
-            randomCoefficient = random(2,8);
-            pushed++;
+        startTime = 1;
+        randomCoefficient = random(2,8);
+        pushed++;
         
-            if (pushed == clouds.length){
-                mixCloudsArr(clouds);
-                pushed = 0;
-            }
+        if (pushed == clouds.length){
+            mixCloudsArr(clouds);
+            pushed = 0;
+        }
     }
     else {
         startTime++;
     }
-    
     setTimeout(function () {
         timer(startTime,randomCoefficient,pushed);
     }, 3000);
@@ -117,14 +114,13 @@ function whichTransitionEvent(){
     var t;
     var el = document.createElement('fakeelement');
     var transitions = {
-        'transition':'transitionend',
-        'OTransition':'oTransitionEnd',
-        'MozTransition':'transitionend',
-        'WebkitTransition':'webkitTransitionEnd'
+        'transition'      : 'transitionend',
+        'OTransition'     : 'oTransitionEnd',
+        'MozTransition'   : 'transitionend',
+        'WebkitTransition': 'webkitTransitionEnd'
     };
-
     for(t in transitions){
-        if( el.style[t] !== undefined ){
+        if(el.style[t] !== undefined){
             return transitions[t];
         }
     }
@@ -132,7 +128,6 @@ function whichTransitionEvent(){
 
 function pushCloud(cloud) {
     cloud.style.left = window.innerWidth + 2 + 'px';
-
     var transitionEvent = whichTransitionEvent();
     transitionEvent && cloud.addEventListener(transitionEvent, function() {
         if (parseInt(cloud.style.left) >= window.innerWidth) {
@@ -154,12 +149,12 @@ function tuneSkyBlock() {
 }
 
 function tuneSkyBlockObjects(parent) {
+    
 }
 
 function tuneGroudBlock() {
     var grounBlock = document.getElementById("groundBlockId");
     grounBlock.style.height = window.innerHeight * 0.7 + "px";
-
     with (document.getElementById("skyBlockId")) {
         grounBlock.style.top = parseInt(style.height) + "px";
 
@@ -210,17 +205,13 @@ function tuneLevelSelectionMenu(){
         button.className = 'menuButtons';
         button.innerHTML = name;
         button.onclick = function (event) {
-
             var sourceElem = event.target || event.srcElement;
             action();
             var tmp = sourceElem.id.split(':');
             var id = parseInt(tmp[1]);
-            
             //что то с id
-            
         }
     }
-    
     var obj = document.getElementById("chooselevelId");
     obj.style.left = (window.innerHeight / 2) + 200 + 'px';
     
@@ -261,9 +252,9 @@ function tuneMenu() {
         if (children[i].className == "menuButtons") {
             var id = children[i].id.split('_');
             children[i].style.top = (id[0] * 45) + 'px';
-        } else if (children[i].className == "level") {
+        } 
+        else if (children[i].className == "level") {
             var submenu = document.getElementById("levelId");
-            
             submenu.style.display = 'none';
             submenu.style.top = children[i - 4].style.top;
             
