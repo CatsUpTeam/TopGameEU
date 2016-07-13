@@ -37,6 +37,21 @@ body {
     left: -80px;
     background-repeat: no-repeat;
 }
+.house {
+    position: absolute;
+    z-index: 3;
+    height: 200px;
+    background-image: url(../res/house.png);
+    width: 120px;
+}
+.well {
+    position: absolute;
+    z-index: 3;
+    height: 73px;
+    left:500px;
+    background-image: url(../res/well.png);
+    width: 86px;
+}
 
 #tree {
     position: inherit;
