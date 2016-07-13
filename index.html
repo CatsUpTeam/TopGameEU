@@ -26,9 +26,9 @@
             <figure class="back" id="backId">
             </figure>
             <figure class="front" id="frontId">
-                <a class="menuButtons" id = "0" onclick = "newGame()">New game</a>
-                <a class="menuButtons" id = "1">Replay</a>
-                    <a class="menuButtons" id = "2">Solve</a>
+                <a class="menuButtons" id = "0" onclick="newGame()">New game</a>
+                <a class="menuButtons" id = "1" onclick="game.restart()">Replay</a>
+                    <a class="menuButtons" id = "2" onclick="game.solve()">Solve</a>
                     <a class="menuButtons" id = "3" onclick="showHiddenMenu()">Level</a>
                     <div class = "chooseLevel" id = "chooseLevelId">
                         <a class="menuButtons" id = "3_1" onclick="chooseLevel(5,5)">Easy</a>

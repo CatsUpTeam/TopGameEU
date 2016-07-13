@@ -88,6 +88,7 @@ function Board(width, height, startPoints, finishPoints) {
     }
     this.width = width;
     this.height = height;
+    this.level = null;
     this.HTML.style.width  = width * 45 + "px";
     this.HTML.style.height = height * 45 + "px";
     this.begins = [];
@@ -152,13 +153,14 @@ Game.prototype.loadLevel = function (width, height, level) {
         this.board.removeObject();
     }
     this.board = new Board(width, height, level.startPoints, level.endPoints);
+    this.board.level = level;
     //this.board.centrify();
     for (var i = 0; i < height; i++) {
         for (var j = 0; j < width; j++) {
             var tubeData = level.tubeData[i][j];
             var cssData = tubeDataToCSS(tubeData);
             if (cssData == "") {
-
+                this.board.tubes[i][j] = null;
                 continue;
             }
             this.board.tubes[i][j] = new Tube(this.board, cssToTube(cssData), cssData, j, i);
@@ -207,6 +209,9 @@ function checkWinCondition(b, si, sj, ei, ej, cameFrom) {
 }
 
 Game.prototype.isOver = function() {
+    if (this.doCheckWinCondition == false) {
+        return;
+    }
     var b = this.board;
     for (let i = 0; i < b.begins.length; i++){
         checkWinCondition(b, b.begins[i].i, b.begins[i].j, b.ends[i].i, b.ends[i].j);
@@ -218,7 +223,32 @@ Game.prototype.createRandomLevel = function(width, height, complexity) {
 };
 
 Game.prototype.solve = function () {
-
+    if (this.board.level == null) {
+        return;
+    }
+    var equalTubeData = function (a, b) {
+        for (var i = 0; i < a.length; i++) {
+            if (a[i] != b[i]) {
+                return false;
+            }
+        }
+        return true;
+    };
+    var emptyData = [false, false, false, false];
+    for (var i = 0; i < this.board.height; i++) {
+        for (var j = 0; j < this.board.width; j++) {
+            var labTubeData = this.board.level.tubeData[i][j];
+            if (equalTubeData(labTubeData, emptyData)) {
+                continue;
+            }
+            var tubeData = this.board.tubes[i][j].branch;
+            while (!equalTubeData(labTubeData, tubeData)) {
+                this.board.tubes[i][j].rotateRight();
+                tubeData = this.board.tubes[i][j].branch;
+            }
+        }
+    }
+    this.doCheckWinCondition = true;
 };
 
 Game.prototype.lockUserActions = function () {
@@ -230,7 +260,10 @@ Game.prototype.unlockUserActions = function () {
 };
 
 Game.prototype.restart = function () {
-
+    var width = game.board.width;
+    var height = game.board.height;
+    var level  = game.board.level;
+    this.loadLevel(width, height, level);
 };
 
 Game.prototype.randomize = function () {
@@ -262,12 +295,12 @@ Game.prototype.createTestLevel = function () {
 
 var game = new Game();
 
-var fieldWidth = 5, fieldHeight = 5;
+var fieldWidth  = 5;
+var fieldHeight = 5;
 
-function chooseLevel(w,h){
+function chooseLevel(w, h){
     var submenu = document.getElementById("chooseLevelId");
     submenu.style.display = 'none';
-
     fieldWidth = w;
     fieldHeight = h;
     newGame();

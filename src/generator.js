@@ -331,7 +331,8 @@ function randomLevel(width, height, complexity) {
     return {
         tubeData: routesToTubeData(width, height, routes),
         startPoints: startPoints,
-        endPoints: endPoints
+        endPoints: endPoints,
+        complexity: complexity
     };
 }
 
