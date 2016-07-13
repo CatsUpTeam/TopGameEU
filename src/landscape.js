@@ -4,10 +4,13 @@ window.onload = function () {
     tuneLandscape();
     createClouds();
     tuneLevelSelectionMenu();
+    tuneWinBlock();
     timer(1,random(1,8),0);
 };
 window.onresize = function () {
     tuneLandscape();
+    tuneWinBlock();
+    tuneLevelSelectionMenu();
 };
 
 /* DOM Utility Functions from PastryKit */
@@ -43,6 +46,7 @@ var init = function() {
 window.addEventListener( 'DOMContentLoaded', init, false);
 
 function showHiddenMenu() {
+    action();
     var subMenu = document.getElementById("levelId");
     
     if (subMenu.style.display == 'none'){
@@ -198,11 +202,12 @@ function tuneLevelSelectionMenu(){
         button.onclick = function (event) {
 
             var sourceElem = event.target || event.srcElement;
-
-            document.getElementById("chooselevelId").style.top = '-300px';
+            action();
             var tmp = sourceElem.id.split(':');
             var id = parseInt(tmp[1]);
+            
             //что то с id
+            
         }
     }
     
@@ -222,10 +227,22 @@ function tuneLevelSelectionMenu(){
 }
 
 function levelSelectionMenu(){
+    action();
     var obj = document.getElementById("chooselevelId");
     document.getElementById("levelId").style.display = 'none';
-    obj.style.transition = '1s';
     obj.style.top = '200px';
+}
+
+
+function tuneWinBlock() {
+    var obj = document.getElementById("winDivId");
+    obj.style.left = (window.innerHeight / 2) + 120 + 'px';
+}
+
+function showWinBlock(){
+    var obj = document.getElementById("winDivId");
+    obj.style.transition = '1s';
+    obj.style.top = '50px';
 }
 
 function tuneMenu() {
@@ -248,4 +265,14 @@ function tuneMenu() {
             }
         }
     }
+}
+
+function action() {
+    document.getElementById("levelId").style.display = 'none';
+    document.getElementById("chooselevelId").style.top = '-300px';
+    document.getElementById("winDivId").style.top = '-300px';
+}
+
+function blockAway(idName) {
+    var obj = document.getElementById(idName).style.top = '-300px';
 }

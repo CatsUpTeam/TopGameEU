@@ -120,7 +120,7 @@ Tube.prototype.rotate = function (angle) {
     }
     if (!this.branch.locked){
         if (checkWinCondition(this.parent)){
-            alert("win");
+            showWinBlock();
         }
     }
 };
@@ -265,6 +265,7 @@ Game.prototype.createRandomLevel = function(width, height, complexity) {
 };
 
 Game.prototype.solve = function () {
+    action();
     if (this.board.level == null) {
         return;
     }
@@ -302,6 +303,7 @@ Game.prototype.unlockUserActions = function () {
 };
 
 Game.prototype.restart = function () {
+    action();
     var width = game.board.width;
     var height = game.board.height;
     var level  = game.board.level;
@@ -348,5 +350,6 @@ function chooseLevel(w, h){
 }
 
 function newGame() {
+    action();
     game.loadLevel(fieldWidth, fieldHeight, randomLevel(fieldWidth, fieldHeight, 1));
 }
