@@ -169,11 +169,6 @@ function random(min, max) {
     return rand;
 };
 
-function chooseLevel() {
-    var submenu = document.getElementById("chooseLevelId");
-    submenu.style.display = 'none';
-}
-
 function tuneMenu() {
     var children = document.getElementById("frontId").childNodes;
     for (var i = 0; i < children.length;++i) {
