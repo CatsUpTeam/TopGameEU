@@ -81,6 +81,7 @@ function checkWinCondition(board) {
 Tube.prototype = new GameObject();
 
 function Tube(parent, branch, tubeType, x, y) {
+    console.log(branch);
     GameObject.call(this, parent, "tube");
     this.HTML.classList.add(tubeType);
     this.tubeType = tubeType;
@@ -102,21 +103,41 @@ function Tube(parent, branch, tubeType, x, y) {
     this.setPosition(x, y);
 }
 
+function shiftRight(branch) {
+    let tmp = branch[3];
+    for (let i = 3; i > 0; --i){
+        branch[i] = branch[i - 1];
+    }
+    branch[0] = tmp;
+};
+
+function shiftLeft(bracnh) {
+    let tmp = bracnh[0];
+    for (let i = 0; i < 3; i++){
+        bracnh[i] = bracnh[i + 1];
+    }
+    bracnh[3] = tmp;
+};
+
 Tube.prototype.rotate = function (angle) {
-    var shiftRight = function(branch) {
-        branch.unshift(branch[3]);
-    };
-    var shiftLeft = function(branch) {
-        branch.push(branch[0]);
-        branch.shift();
-    };
+    // var shiftRight = function(branch) {
+    //     var tmp = branch[3];
+    //     branch.unshift(tmp);
+    // };
+    // var shiftLeft = function(branch) {
+    //     var tmp = bracnh[0];
+    //     for (let i = 0; i < 3; i++){
+    //         bracnh[i] = bracnh[i + 1];
+    //     }
+    //     bracnh[3] = tmp;
+    // };
     
     this.angle += angle;
     this.HTML.style.transform = "rotate(" + this.angle + "deg)";
     angle < 0 ? shiftLeft(this.branch) : shiftRight(this.branch);
     if (!this.branch.locked && checkWinCondition(this.parent)) {
         game.stopTimer();
-        showWinLoseBlock("congratulations", "rgb(252, 240, 5)");
+        showWinLoseBlock("Congratulations", "rgb(252, 240, 5)");
         score++;
     }
 };
@@ -294,7 +315,25 @@ Game.prototype.randomize = function () {
     }
 };
 
+Game.prototype.createTestLevel = function () {
+    console.log("Creating test level" );
+    var level = {
+        tubeData: 
+           [[NO_TUBE, L_TUBE, NO_TUBE],
+            [NO_TUBE, L_TUBE, L_TUBE],
+            [NO_TUBE, NO_TUBE, NO_TUBE]],
+        startPoints: [0],
+        endPoints: [0],
+        complexity: 1,
+        width:  3,
+        height: 3
+    };
+    this.loadLevel(level);
+
+};
 var game = new Game();
+// game.createTestLevel();
+// console.log(game.board.tubes[0][1].branch);
 window.onresize = function () { game.board.centrify() };
 var fieldWidth  = 5;
 var fieldHeight = 5;
