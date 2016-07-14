@@ -114,7 +114,7 @@ Tube.prototype.rotate = function (angle) {
     angle < 0 ? shiftLeft(this.branch) : shiftRight(this.branch);
     if (!this.branch.locked && checkWinCondition(this.parent)) {
         game.stopTimer();
-        showWinBlock();
+        showWinLoseBlock("congratulations", "rgb(252, 240, 5)");
     }
 };
 
@@ -147,7 +147,7 @@ function Board(level) {
         this.tubes[tA.y][tA.x] = new Tube(this.HTML, X_TUBE, "tubeStart",  tA.x, tA.y);
         this.tubes[tB.y][tB.x] = new Tube(this.HTML, X_TUBE, "tubeFinish", tB.x, tB.y);
         startTop  = this.tubes[tA.y][tA.x].HTML.style.top;
-        finishTop = this.tubes[tA.y][tA.x].HTML.style.top;
+        finishTop = this.tubes[tB.y][tB.x].HTML.style.top;
     }
     this.locked = true;
     this.attachObject();
@@ -230,7 +230,7 @@ Game.prototype.startTimer = function(timeLeft) {
     var tick = setInterval(function() {
         currentTime++;
         if (currentTime == timeLeft) {
-            alert('you lose');
+            showWinLoseBlock("You lose", "rgb(252, 0, 0)");
             clearInterval(tick);
         }
         setProgress(Math.floor(currentTime / timeLeft * 100));
@@ -271,7 +271,6 @@ Game.prototype.solve = function () {
 };
 
 Game.prototype.restart = function () {
-
     var level  = game.board.level;
     this.loadLevel(level);
     action();
@@ -294,7 +293,6 @@ Game.prototype.randomize = function () {
 
 var game = new Game();
 window.onresize = function () { game.board.centrify() };
-
 var fieldWidth  = 5;
 var fieldHeight = 5;
 
@@ -306,7 +304,9 @@ function chooseLevel(w, h){
 }
 
 function newGame() {
-
     game.loadLevel(randomLevel(fieldWidth, fieldHeight, 1));
+    cleanTubes();
+    tubeToStart();
+    tubeToFinsish();
     action();
 }
