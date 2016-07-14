@@ -19,7 +19,6 @@
     @import url("css/landscape.css");
     @import url("css/tube.css");
     @import url("css/controls.css");
-    @import url("css/progress_bar.css");
 </style>
 <body>
 
@@ -29,9 +28,8 @@
     </div>
     <div class="groundBlock" id="groundBlockId">
 
-        <div class="progressbar" id="progressBarId">
-            <div class="bar"><span></span></div>
-        </div>
+          <p class="statisticText" id="lvlsComp"></p>
+          <p class="statisticText" id="time"></p>
 
         <div class="menuButton" id="button">
         </div>
@@ -39,8 +37,6 @@
         <div class="menu" id="menuId">
             <div id="card">
                 <figure class="back" id="backId">
-                </figure>
-                <figure class="front" id="frontId">
                     <a class="menuButtons" id = "0" onclick="newGame()">New game</a>
                     <a class="menuButtons" id = "1" onclick="game.restart()">Replay</a>
                     <a class="menuButtons" id = "2" onclick="game.solve()">Solve</a>
@@ -49,9 +45,11 @@
                         <a class="menuButtons" id = "3_1" onclick="chooseLevel(5, 5)">Easy</a>
                         <a class="menuButtons" id = "3_2" onclick="chooseLevel(10,10)">Medium</a>
                         <a class="menuButtons" id = "3_3" onclick="chooseLevel(17,13)">Hard</a>
-                        <a class="menuButtons" id = "3_4" onclick="levelSelectionMenu()">Choose</a>
+                        <a class="menuButtons" id = "3_4" onclick="showlevelSelectionMenu()">Choose</a>
                     </div>
                     <a class="menuButtons" id = "4" onclick="showResultBlock()">Results</a>
+                </figure>
+                <figure class="front" id="frontId">
                 </figure>
             </div>
         </div>
@@ -72,10 +70,12 @@
 
 
     <div class="chooselevel" id="resultsId">
-        <input class = "menuButtons inputDataBase" id="nameText" type="text" size="40" value = "Your name">
-        <a class="menuButtons menuButtonsDataBase" id = "addDataId">OK</a>
-        <table id="leaderBoardId" class="tableDataBase">
-            <caption>Leader board</caption>
+        <input class = "menuButtons inputDataBase" id="nameText" type="text" value = "Your name" onfocus="if (this.value == 'Your name')
+        {this.value = ''; this.style.color = '#000';}" onblur="if (this.value == '')
+        {this.value = 'Your name'; this.style.color = '#777';}">
+        <a class="menuButtons backButtonDataBase" id = "fromTableId">←</a>
+        <a class="menuButtons okButtonDataBase" id = "addDataId">OK</a>
+        <table id="leaderBoardId">
             <tr>
                 <th>User</th>
                 <th>Score</th>
@@ -88,10 +88,6 @@
     <script src="src/landscape.js" type="text/javascript"></script>
     <script src="src/generator.js" type="text/javascript"></script>
     <script src="src/game.js" type="text/javascript"></script>
-    <script src="src/blackbox/jquery.min.js" type="text/javascript"></script>
     <script src="src/blackbox/flipScript.js" type="text/javascript"></script>
-    <script src="src/blackbox/progress_bar.js" type="text/javascript"></script>
-
-
     </body>
 </html>
