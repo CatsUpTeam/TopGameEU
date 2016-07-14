@@ -132,7 +132,6 @@ function tuneGroudBlock() {
         with (obj.style) {
             height = '50px';
             top = parseInt(style.height) - parseInt(obj.style.height) + "px";
-            left = '500px';
         }
     }
     tuneMenu();
@@ -178,7 +177,7 @@ function tuneLevelSelectionMenu(){
         
     }
     var obj = document.getElementById("chooselevelId");
-    obj.style.left = (window.innerHeight / 2) + 200 + 'px';
+    obj.style.left = (window.innerWidth / 2) - 200 + 'px';
     
     makeButton(1,1);
     makeButton(2,2);
@@ -201,7 +200,7 @@ function levelSelectionMenu(){
 
 function tuneWinLoseBlock() {
     var obj = document.getElementById("winDivId");
-    obj.style.left = (window.innerHeight / 2) + 120 + 'px';
+    obj.style.left = (window.innerWidth / 2) - 120 + 'px';
 }
 
 function showWinLoseBlock(text,color){
@@ -286,4 +285,28 @@ function tuneStaticTubes(ftop, fleft, rotate){
 
 function blockAway(idName) {
     var obj = document.getElementById(idName).style.top = '-300px';
+}
+
+function showScore(data) {
+    var table = document.getElementById("leaderBoardId");
+    for (var keks in data) {
+        if (data.hasOwnProperty(keks)) {
+            var row = table.insertRow(1);
+            var user = row.insertCell(0);
+            var score = row.insertCell(1);
+            user.innerHTML  =  data[keks].name;
+            score.innerHTML = data[keks].score;   
+        }
+    }
+    table.style.left = (window.innerWidth / 2) + "px";
+    table.style.top = "50px";
+}
+
+function hideScore() {
+    var table = document.getElementById("leaderBoardId");
+    table.style.top = "-100px";
+    var rowAmount = table.getElementsByTagName("tr").length;
+    for (var i = 0; i < rowAmount; i++) {
+        table.deleteRow(1);
+    }
 }
