@@ -310,3 +310,42 @@ function newGame() {
     tubeToFinsish();
     action();
 }
+
+function addToScoreBoard(username, score) {
+    firebase.database().ref('users/'+ username).set({
+        name : username,
+        score: score
+    });
+}
+
+function checkUserExistence(username, score) {
+    var value = 0;
+    var user = firebase.database().ref('users/' + username).once('value', function(snapshot){
+        //console.log(snapshot.val());
+        value = snapshot.val();
+        if (value == null){
+            addToScoreBoard(username, score);
+        }
+        else{
+            var updates = {};
+            updates['users/' + username +"/score"] = score;
+            updates["users/" + username + "/name"] = username;
+            firebase.database().ref().update(updates);
+        }
+    });
+    if (value == null) {
+        addToScoreBoard(username, score);
+        return;
+    }
+    
+}
+
+function getHighScores() {
+    var data = null;
+    console.log(firebase.database().ref("users").once("value", function (snapshot) {
+        console.log(snapshot.val();
+        data = snapshot.val();)
+    }));
+    
+}
+
