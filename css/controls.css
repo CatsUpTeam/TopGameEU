@@ -136,9 +136,30 @@ figure {
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ccc2a6', endColorstr='#eae0c2',GradientType=0);
     background-color:#ccc2a6;
 }
-.menuButtons:active {
-    position:inherit;
-    top:1px;
+
+.menuButtonsDataBase{
+    position: inherit;
+    right: 10px;
+    top: 50px;
+    width: 30px;
+    height: 5px;
+    font-size: 12px;
+}
+
+.inputDataBase {
+    position: inherit;
+    left: 10px;
+    top: 5px;
+    width: 80%;
+}
+
+.tableDataBase{
+    position: inherit;
+    top: 90px;
+    width: 80%;
+    height: auto;
+    border: 4px outset blue;
+    left: 10%;
 }
 
 .level {
