@@ -23,14 +23,6 @@
 </style>
 <body>
 
-    <table id="leaderBoardId">
-        <caption>Leader board</caption>
-        <tr>
-            <th>User</th>
-            <th>Score</th>
-        </tr>
-    </table>
-
     <div class="skyBlock" id="skyBlockId">
         <div id="grass"></div>
         <div id="tree"></div>
@@ -59,7 +51,7 @@
                         <a class="menuButtons" id = "3_3" onclick="chooseLevel(17,13)">Hard</a>
                         <a class="menuButtons" id = "3_4" onclick="levelSelectionMenu()">Choose</a>
                     </div>
-                    <a class="menuButtons" id = "4">Results</a>
+                    <a class="menuButtons" id = "4" onclick="showResultBlock()">Results</a>
                 </figure>
             </div>
         </div>
@@ -77,9 +69,24 @@
     <div class="house" id = "houseId"></div>
     <div class="well" id = "wellId"></div>
 
+
+
+    <div class="chooselevel" id="resultsId">
+        <input class = "menuButtons inputDataBase" id="nameText" type="text" size="40" value = "Your name">
+        <a class="menuButtons menuButtonsDataBase" id = "addDataId">OK</a>
+        <table id="leaderBoardId" class="tableDataBase">
+            <caption>Leader board</caption>
+            <tr>
+                <th>User</th>
+                <th>Score</th>
+            </tr>
+        </table>
+
+    </div>
+
     <script src="src/utils.js" type="text/javascript"></script>
-    <script src="src/generator.js" type="text/javascript"></script>
     <script src="src/landscape.js" type="text/javascript"></script>
+    <script src="src/generator.js" type="text/javascript"></script>
     <script src="src/game.js" type="text/javascript"></script>
     <script src="src/blackbox/jquery.min.js" type="text/javascript"></script>
     <script src="src/blackbox/flipScript.js" type="text/javascript"></script>
