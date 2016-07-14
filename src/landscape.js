@@ -237,7 +237,7 @@ function levelSelectionMenu(){
 
 function tuneWinBlock() {
     var obj = document.getElementById("winDivId");
-    obj.style.left = (window.innerHeight / 2) + 120 + 'px';
+    obj.style.left = (window.innerWidth / 2) - 120 + 'px';
 }
 
 function showWinBlock(){
@@ -282,3 +282,28 @@ function action() {
 function blockAway(idName) {
     var obj = document.getElementById(idName).style.top = '-300px';
 }
+
+function showScore(data) {
+    var table = document.getElementById("leaderBoardId");
+    for (var i = 0; i < data.length; i++) {
+        var row = table.insertRow(1);
+        var user = row.insertCell(0);
+        var score = row.insertCell(1);
+        user.innerHTML = data[i].user;
+        score.innerHTML = data[i].score;
+    }
+    table.style.left = (window.innerWidth / 2) + "px";
+    table.style.top = "50px";
+}
+
+function hideScore() {
+    var table = document.getElementById("leaderBoardId");
+    table.style.top = "-100px";
+    var rowAmount = table.getElementsByTagName("tr").length;
+    for (var i = 0; i < rowAmount; i++) {
+        table.deleteRow(1);
+    }
+}
+
+// var data = [{user: 'glebas', score: 100}, {user: 'kekus', score: 200}];
+// showScore(data);
