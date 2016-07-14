@@ -2,6 +2,12 @@ function randomInt(max) {
     return Math.floor(Math.random() * max);
 }
 
+function random(min, max) {
+    var rand = min - 0.5 + Math.random() * (max - min + 1);
+    rand = Math.round(rand);
+    return rand;
+};
+
 function Point(x, y) {
     this.x = x;
     this.y = y;
