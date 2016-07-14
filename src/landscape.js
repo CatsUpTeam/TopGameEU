@@ -1,18 +1,14 @@
 var clouds = [];
 var tubes = [];
+var stopTimer = false;
 
 window.onload = function () {
     tuneLandscape();
     createClouds();
-    tuneLevelSelectionMenu();
-    tuneWinLoseBlock();
-    timer(1,random(1,8),0);
+    createLevelSelectionMenu();
+    cloudTimer(1,random(1,8),0);
 };
-window.onresize = function () {
-    tuneLandscape();
-    tuneWinLoseBlock();
-    tuneLevelSelectionMenu();
-};
+
 
 var init = function() {
     document.getElementById('button').addEventListener('click', function(){
@@ -21,9 +17,7 @@ var init = function() {
 };
 
 window.addEventListener( 'DOMContentLoaded', init, false);
-
 function showHiddenMenu() {
-    action();
     var subMenu = document.getElementById("levelId");
     if (subMenu.style.display == 'none'){
         subMenu.style.display = 'block';
@@ -33,8 +27,7 @@ function showHiddenMenu() {
     }
 }
 
-function timer(startTime,randomCoefficient,pushed) {
-
+function cloudTimer(startTime, randomCoefficient, pushed) {
     if (startTime == 9) {
         startTime = 1;
         randomCoefficient = random(2,8);
@@ -57,9 +50,37 @@ function timer(startTime,randomCoefficient,pushed) {
         startTime++;
     }
     setTimeout(function () {
-        timer(startTime,randomCoefficient,pushed);
+        cloudTimer(startTime,randomCoefficient,pushed);
     }, 3000);
 
+}
+
+var timer;
+
+function gameTimer() {
+    var tmp = document.getElementById("time").innerHTML.split(':');
+    var seconds = parseInt(tmp[1]);
+
+    if (stopTimer) {
+        return;
+    }
+
+    if (seconds == 0) {
+        showWinLoseBlock("You lose","rgb(252, 0, 0)");
+        return;
+    }
+    seconds--;
+    document.getElementById("time").innerHTML = "Time left: " + seconds;
+
+    timer = setTimeout(function () {
+        gameTimer(); }, 1000);
+}
+
+function startTimer() {
+    
+    stopTimer = false;
+    document.getElementById("time").innerHTML = "Time Left: 30";
+    gameTimer();
 }
 
 function mixCloudsArr(CloudsArr) {
@@ -137,13 +158,7 @@ function tuneGroudBlock() {
     tuneMenu();
 }
 
-function random(min, max) {
-    var rand = min - 0.5 + Math.random() * (max - min + 1);
-    rand = Math.round(rand);
-    return rand;
-};
-
-function tuneLevelSelectionMenu(){
+function createLevelSelectionMenu(){
     var topvalue = 20,leftvalue = 20;
     
     function makeButton(name,buttonid) {
@@ -172,7 +187,6 @@ function tuneLevelSelectionMenu(){
             action();
             var tmp = sourceElem.id.split(':');
             var id = parseInt(tmp[1]);
-            //что то с id
         }
         
     }
@@ -190,29 +204,8 @@ function tuneLevelSelectionMenu(){
     makeButton(9,9);
     makeButton('←',10);
 }
-
-function levelSelectionMenu(){
-    action();
-    var obj = document.getElementById("chooselevelId");
-    document.getElementById("levelId").style.display = 'none';
-    obj.style.top = '200px';
-}
-
-function tuneWinLoseBlock() {
-    var obj = document.getElementById("winDivId");
-    obj.style.left = (window.innerWidth / 2) - 120 + 'px';
-}
-
-function showWinLoseBlock(text,color){
-    var obj = document.getElementById("winDivId");
-    obj.childNodes[0].innerHTML = text;
-    obj.style.color =  color;
-    obj.style.transition = '1s';
-    obj.style.top = '50px';
-}
-
 function tuneMenu() {
-    var children = document.getElementById("frontId").childNodes;
+    var children = document.getElementById("backId").childNodes;
     for (var i = 0; i < children.length;++i) {
         if (children[i].className == "menuButtons") {
             var id = children[i].id.split('_');
@@ -236,12 +229,16 @@ function tuneMenu() {
 var startTop,finishTop;
 
 function action() {
+    clearTimeout(timer);
+    document.getElementById("time").innerHTML = "";
+    stopTimer = true;
+    
     document.getElementById("houseId").style.left = fieldLeft - 48  + 'px';
     document.getElementById("wellId").style.left = fieldRight - 5 + 'px';
     document.getElementById("levelId").style.display = 'none';
-    document.getElementById("chooselevelId").style.top = '-300px';
-    document.getElementById("resultsId").style.top = '-300px';
-    document.getElementById("winDivId").style.top = '-300px';
+    blockAway("chooselevelId");
+    blockAway("resultsId");
+    blockAway("winDivId");
 }
 
 function cleanTubes() {
@@ -288,7 +285,7 @@ function blockAway(idName) {
     var obj = document.getElementById(idName).style.top = '-300px';
 }
 
-function showScore(data) {
+function fillTable(data) {
     var table = document.getElementById("leaderBoardId");
     for (var keks in data) {
         if (data.hasOwnProperty(keks)) {
@@ -301,7 +298,7 @@ function showScore(data) {
     }
 }
 
-function showTable() {
+function refreshTable() {
     var tab = document.getElementById("leaderBoardId");
     var rowAmount = tab.getElementsByTagName("tr").length;
     for (var i = 1; i < rowAmount; i++) {
@@ -310,20 +307,50 @@ function showTable() {
     getHighScores();
 }
 
+function showlevelSelectionMenu(){
+    tuneDropdownBlock("chooselevelId",290);
+    action();
+    var obj = document.getElementById("chooselevelId");
+    document.getElementById("levelId").style.display = 'none';
+    obj.style.top = '200px';
+}
+
+function showWinLoseBlock(text,fcolor){
+    tuneDropdownBlock("winDivId",400);
+    var obj = document.getElementById("winDivId");
+    obj.childNodes[0].innerHTML = text;
+    with (obj.style) {
+        color = fcolor;
+        transition = '1s';
+        top = '50px';
+    }
+}
 
 function showResultBlock(){
-    showTable();
-    
+    tuneDropdownBlock("resultsId",290);
+    action();
+    refreshTable();
     var obj = document.getElementById("resultsId");
-    obj.style.left = (window.innerWidth / 2) - 145 + 'px';
-    obj.style.top = '200px';
-    obj.style.height = '200px';
-    obj.style.overflowY = 'scroll';
+    with (obj.style) {
+        top = '200px';
+        height = '200px';
+        overflowY = 'scroll';
+    }
     
-
-    var but = document.getElementById("addDataId");
-    but.onclick = function () {
+    var okBut = document.getElementById("addDataId");
+    okBut.onclick = function () {
         checkUserExistence(document.getElementById("nameText").value,score);
-        showTable();
+        refreshTable();
     };
+
+    var backBut = document.getElementById("fromTableId");
+    backBut.onclick = function () { 
+        action() 
+    };
+}
+
+function tuneDropdownBlock(id,fwidth) {
+    var obj = document.getElementById(id);
+    obj.style.width = fwidth + 'px';
+    obj.style.left = (window.innerWidth / 2) - parseInt(obj.style.width) / 2 + 'px';
 }

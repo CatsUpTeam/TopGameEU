@@ -136,9 +136,10 @@ Tube.prototype.rotate = function (angle) {
     this.HTML.style.transform = "rotate(" + this.angle + "deg)";
     angle < 0 ? shiftLeft(this.branch) : shiftRight(this.branch);
     if (!this.branch.locked && checkWinCondition(this.parent)) {
-        game.stopTimer();
-        showWinLoseBlock("Congratulations", "rgb(252, 240, 5)");
+        clearTimeout(timer);
         score++;
+        document.getElementById("lvlsComp").innerHTML = "Levels completed: " + score;
+        showWinLoseBlock("Congratulations", "rgb(252, 240, 5)");
     }
 };
 
@@ -244,22 +245,8 @@ Game.prototype.loadLevel = function (level) {
     }
     this.randomize();
     this.stopTimer();
-    this.startTimer(90);
     this.board.centrify();
     this.board.locked = false;
-};
-
-Game.prototype.startTimer = function(timeLeft) {
-    var currentTime = 0;
-    var tick = setInterval(function() {
-        currentTime++;
-        if (currentTime == timeLeft) {
-            showWinLoseBlock("You lose", "rgb(252, 0, 0)");
-            clearInterval(tick);
-        }
-        setProgress(Math.floor(currentTime / timeLeft * 100));
-    }, 1000);
-    this.tick = tick;
 };
 
 Game.prototype.stopTimer = function() {
@@ -298,6 +285,8 @@ Game.prototype.restart = function () {
     var level  = game.board.level;
     this.loadLevel(level);
     action();
+    startTimer();
+
 };
 
 Game.prototype.randomize = function () {
@@ -351,6 +340,7 @@ function newGame() {
     tubeToStart();
     tubeToFinsish();
     action();
+    startTimer();
 }
 
 function addToScoreBoard(username, score) {
@@ -383,7 +373,7 @@ function getHighScores() {
     firebase.database().ref("users").once("value", 
         function (snapshot) {
             data = snapshot.val();
-            showScore(data);
+            fillTable(data);
     });
 }
 
