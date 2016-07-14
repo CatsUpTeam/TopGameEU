@@ -240,6 +240,7 @@ function action() {
     document.getElementById("wellId").style.left = fieldRight - 5 + 'px';
     document.getElementById("levelId").style.display = 'none';
     document.getElementById("chooselevelId").style.top = '-300px';
+    document.getElementById("resultsId").style.top = '-300px';
     document.getElementById("winDivId").style.top = '-300px';
 }
 
@@ -298,15 +299,31 @@ function showScore(data) {
             score.innerHTML = data[keks].score;   
         }
     }
-    table.style.left = (window.innerWidth / 2) + "px";
-    table.style.top = "50px";
 }
 
-function hideScore() {
-    var table = document.getElementById("leaderBoardId");
-    table.style.top = "-100px";
-    var rowAmount = table.getElementsByTagName("tr").length;
-    for (var i = 0; i < rowAmount; i++) {
-        table.deleteRow(1);
+function showTable() {
+    var tab = document.getElementById("leaderBoardId");
+    var rowAmount = tab.getElementsByTagName("tr").length;
+    for (var i = 1; i < rowAmount; i++) {
+        tab.deleteRow(1);
     }
+    getHighScores();
+}
+
+
+function showResultBlock(){
+    showTable();
+    
+    var obj = document.getElementById("resultsId");
+    obj.style.left = (window.innerWidth / 2) - 145 + 'px';
+    obj.style.top = '200px';
+    obj.style.height = '200px';
+    obj.style.overflowY = 'scroll';
+    
+
+    var but = document.getElementById("addDataId");
+    but.onclick = function () {
+        checkUserExistence(document.getElementById("nameText").value,score);
+        showTable();
+    };
 }

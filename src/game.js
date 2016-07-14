@@ -6,6 +6,8 @@ var T_TUBE  = [true  ,true  ,true  ,false];
 var X_TUBE  = [true  ,true  ,true  ,true];
 var NO_TUBE = [false ,false ,false ,false];
 
+var score = 0;
+
 function GameObject(parent, cssClass) {
     this.HTML = document.createElement("div");
     this.parent = parent;
@@ -115,6 +117,7 @@ Tube.prototype.rotate = function (angle) {
     if (!this.branch.locked && checkWinCondition(this.parent)) {
         game.stopTimer();
         showWinLoseBlock("congratulations", "rgb(252, 240, 5)");
+        score++;
     }
 };
 
@@ -220,7 +223,7 @@ Game.prototype.loadLevel = function (level) {
     }
     this.randomize();
     this.stopTimer();
-    this.startTimer(level.complexity * 30);
+    this.startTimer(90);
     this.board.centrify();
     this.board.locked = false;
 };
@@ -328,10 +331,11 @@ function checkUserExistence(username, score) {
         }
         else{
             var updates = {};
-            updates['users/' + username +"/score"] = score;
             updates["users/" + username + "/name"] = username;
+            updates['users/' + username +"/score"] = value.score + score;
             firebase.database().ref().update(updates);
         }
+        score = 0;
     });
 }
 
@@ -343,7 +347,6 @@ function getHighScores() {
             showScore(data);
     });
 }
-getHighScores();
 
 
 
