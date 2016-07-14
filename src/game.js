@@ -333,19 +333,17 @@ function checkUserExistence(username, score) {
             firebase.database().ref().update(updates);
         }
     });
-    if (value == null) {
-        addToScoreBoard(username, score);
-        return;
-    }
-    
 }
 
 function getHighScores() {
     var data = null;
-    console.log(firebase.database().ref("users").once("value", function (snapshot) {
-        console.log(snapshot.val();
-        data = snapshot.val();)
-    }));
-    
+    firebase.database().ref("users").once("value", 
+        function (snapshot) {
+            data = snapshot.val();
+            showScore(data);
+    });
 }
+getHighScores();
+
+
 
