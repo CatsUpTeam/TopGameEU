@@ -1,0 +1,83 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    overflow-x:hidden;
+}
+
+*{
+    -webkit-user-select: none;
+    cursor: default;
+}
+
+.skyBlock {
+    position: absolute;
+    width: 100%;
+    z-index: 3;
+    top: 0px;
+    background-color: #7ed6fc;
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%,color-stop(0, rgb(25, 173, 249)),color-stop(1, rgb(29, 174, 249)));
+    background-image: -webkit-linear-gradient(top,rgb(25, 173, 249) 0%,rgb(227, 255, 255) 101.8%);
+    background-image: linear-gradient(to bottom,rgb(25, 173, 249) 0%,rgb(227, 255, 255) 101.8%);
+    background-image: -ms-linear-gradient(top,rgb(25, 173, 249) 0%,rgb(227, 255, 255) 101.8%);
+}
+
+.groundBlock {
+    width: 100%;
+    z-index: 3;
+    bottom: 0;
+    position: absolute;
+    background-image: url(../res/gr1.png);
+}
+
+.statisticText{
+    position: relative;
+    left: 10px;
+    top: 25px;
+    font-size: 30px;
+    font-weight: inherit;
+    font-family: "Marker Felt";
+
+}
+
+.cloud {
+    position: inherit;
+    top: 0;
+    height: 60px;
+    width: 80px;
+    left: -80px;
+    background-repeat: no-repeat;
+}
+.house {
+    position: absolute;
+    z-index: 3;
+    height: 200px;
+    background-image: url(../res/house.png);
+    width: 120px;
+}
+.well {
+    position: absolute;
+    z-index: 3;
+    height: 50px;
+    left:500px;
+    background-image: url(../res/well.png);
+    width: 59px;
+}
+
+#tree {
+    position: inherit;
+    width: 124px;
+    background-image: url(../res/tree1.png);
+    height: 121px;
+    bottom: 0px;
+    right: 10px;
+    z-index: 1;
+}
+
+#grass {
+    position: inherit;
+    width: 100%;
+    background-image: url(../res/grass.png);
+    background-repeat: repeat-x;
+    height: 26px;
+    bottom: 0px;
+}
