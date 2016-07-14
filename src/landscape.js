@@ -237,7 +237,7 @@ function levelSelectionMenu(){
 
 function tuneWinBlock() {
     var obj = document.getElementById("winDivId");
-    obj.style.left = (window.innerWidth / 2) + 120 + 'px';
+    obj.style.left = (window.innerWidth / 2) - 120 + 'px';
 }
 
 function showWinBlock(){
