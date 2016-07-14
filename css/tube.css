@@ -1,8 +1,8 @@
 .tube {
     width: 45px;
     height: 45px;
+    z-index: 2;
     position: inherit;
-    background-image: url("../res/tTube.png");
     transition: 0.125s;
 }
 
@@ -23,11 +23,11 @@
 }
 
 .tubeStart {
-    background-image: url("../res/tubeStart.png");
+    background-image: url("../res/tubeX.png");
 }
 
 .tubeFinish {
-    background-image: url("../res/tubeFinish.png");
+    background-image: url("../res/tubeX.png");
 }
 
 .board {

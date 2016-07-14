@@ -47,10 +47,10 @@ body {
 .well {
     position: absolute;
     z-index: 3;
-    height: 73px;
+    height: 50px;
     left:500px;
     background-image: url(../res/well.png);
-    width: 86px;
+    width: 59px;
 }
 
 #tree {
