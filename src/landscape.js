@@ -138,6 +138,10 @@ function tuneSkyBlockObjects(parent) {
 function tuneGroudBlock() {
     var grounBlock = document.getElementById("groundBlockId");
     grounBlock.style.height = window.innerHeight * 0.7 + "px";
+    if (((fieldHeight*45)) > parseInt(grounBlock.style.height)) {
+        grounBlock.style.height =parseInt(grounBlock.style.height) +
+            (((fieldHeight*45) + 45) - parseInt(grounBlock.style.height)) + 60 + 'px';   
+    }
     with (document.getElementById("skyBlockId")) {
         grounBlock.style.top = parseInt(style.height) + "px";
 
