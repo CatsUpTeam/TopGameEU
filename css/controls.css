@@ -101,7 +101,7 @@ figure {
     display:inline-block;
     cursor:pointer;
     color:#505739;
-    font-family: "Marker Felt";
+    font-family: Phosphate;
     font-size:14px;
     font-weight:bold;
     padding:12px 16px;
@@ -197,7 +197,7 @@ TH {
     z-index: 5;
     font-size: 48px;
     font-weight: inherit;
-    font-family: "Marker Felt";
+    font-family: Phosphate;
     font-style: inherit;
     text-decoration: inherit;
     text-align: center;
@@ -219,7 +219,7 @@ TH {
     color: #000;
     display: inline-block;
     padding: 5px 15px;
-    font: normal 700 18px/1 "Marker Felt", sans-serif;
+    font: normal 700 18px/1 Phosphate, sans-serif;
     text-align: center;
     text-shadow: none;
 }
