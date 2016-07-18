@@ -79,7 +79,7 @@ function gameTimer() {
 function startTimer() {
     
     stopTimer = false;
-    document.getElementById("time").innerHTML = "Time Left: 30";
+    document.getElementById("time").innerHTML = "Time Left: 60";
     gameTimer();
 }
 

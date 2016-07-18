@@ -120,18 +120,6 @@ function shiftLeft(bracnh) {
 };
 
 Tube.prototype.rotate = function (angle) {
-    // var shiftRight = function(branch) {
-    //     var tmp = branch[3];
-    //     branch.unshift(tmp);
-    // };
-    // var shiftLeft = function(branch) {
-    //     var tmp = bracnh[0];
-    //     for (let i = 0; i < 3; i++){
-    //         bracnh[i] = bracnh[i + 1];
-    //     }
-    //     bracnh[3] = tmp;
-    // };
-    
     this.angle += angle;
     this.HTML.style.transform = "rotate(" + this.angle + "deg)";
     angle < 0 ? shiftLeft(this.branch) : shiftRight(this.branch);
